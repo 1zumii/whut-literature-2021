@@ -81,6 +81,8 @@ Block-chain; Fisco; Online Exam-system; SpringBoot; Vue;
 - 系统使用需要有清晰、完善的文档说明，项目代码注释完善、易读；
 - 项目需要具有足够的测试性，以保证系统性能可用于实际环境；
 - 项目结构设计良好、易于维护，并留存有一定后期功能拓展的空间；
+- 用户操作具有完备的鉴权流程，防止非法操作；
+- 前端布局弹性，根据不同的分辨率响应式渲染展示；
 
 ### 1.3 进度安排
 
@@ -107,6 +109,22 @@ Block-chain; Fisco; Online Exam-system; SpringBoot; Vue;
 第六章总述个人对于项目仍存在的不足之处，和潜在的改进空间。
 
 ## 二、相关技术
+
+### 2.1 SpringBoot
+
+### 2.2 JPA
+
+### 2.3 JWT
+
+### 2.4 Vue.js
+
+
+
+### 2.5 Ant Design Vue
+
+### 2.6 IDEA & Webstorm
+
+IDEA 和 Webstorm 同属 IntellJ 公司推出的功能强大、性能优异的集成开发环境（IDE）。具有丰富的预置功能，例如语法检查、代码补全、源码索引、根据上下文的智能相关操作建议，和 Git/SVN 版本控制等强大功能。IDEA 主要面向的是 Java 相关技术栈的开发人员，因而预先集成了 Maven 与 Spring Initializr 等工具，节省了项目开展过程中一些开发时环境配置的步骤。Webstorm 与 IDEA 相似，但主要面向于前端开发人员。由于项目采用了前后端分离的结构，因此前端部分的开发使用 Webstorm，后端部分的开发则由 IDEA 完成，以有良好、便捷的开发体验。
 
 ## 三、系统设计
 
