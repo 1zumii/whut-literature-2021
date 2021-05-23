@@ -178,6 +178,16 @@ Vue 的技术基础是将根节点组件挂载在页面的一个 DOM 元素上�
 
 组件的渲染可能受控于父组件的逻辑，也可能受路由器的控制。在父组件中注册成为\<router-view>的子组件，就通过 Vue-Router 的路由器，根据页面的 URL 动态响应渲染。其中也可以通过页面的 URL 动态路由匹配，向组件的 Props 注入匹配到的参数。
 
+#### 3.1.2 后端架构模型
+
+![后端模型](../_images/后端模型.png)
+
+前端请求进入后端服务首先会被拦截器 Interceptor 所截获。通过 InterceptorConfig 配置需要拦截的 api 的 url 规则，并加入对应的 Interceptor。项目中的 JWT 鉴权流程便放在拦截器这一层运行。
+
+请求根据具体 api 的 URL，进入不同的 controller，controller 根据业务调用对应的 Service 中的方法。由于使用了 SpringData JPA，数据库中的表与 Repository 对应且关联，因而 Service 中对 DAO 的操作则需要依赖于 Repository。
+
+针对敏感数据需要上链的 Service，通过 Fisco Bcos 提供的 SDK，接入预先编译成 Java 文件的智能合约。而智能合约由通过密钥对的形式连接至区块链节点组成的网络。
+
 ### 3.2 模块划分
 
 功能模块
