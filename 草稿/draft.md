@@ -449,11 +449,71 @@ public class JwtUtils {
 
 ### 3.6 数据库结构设计
 
+#### 3.6.1 数据库概念设计
+
+
+
+#### 3.6.2 数据库逻辑设计
+
+#### 3.6.3 数据库物理设计
+
 ## 四、系统实现
 
-时序图、流程图
+~~时序图、流程图~~
 
 ### 4.1 题库模块
+
+![题库模块截图](../_images/题库模块截图.png)
+
+进入题库模块前需要先检查是否有进入的权限，如果没有则需要一定的 403 反馈。正常操作流程下，没有权限是无法通过点击事件进入题库，但也可能通过浏览器的地址栏 URL，通过路由器强行渲染出对应的题库 View 组件，因此仍是需要在进入模块前进行权限检查。
+
+如果有权限进入，则展示所有的题目，并可以进行分页操作、选择题库查看、选择具体题目操作。
+
+分页操作，则需要在组件中托管具体的 current、pageSize、total 数据，并注入 ant-d-v 提供的 \<Pagination>。分页请求时，向后端发起 /exam/question/list 的 GET 请求，并将 current 和 pageSize 作为参数。在后端 Controller 中接收请求，做处理。
+
+```java
+@GetMapping("/question/list")
+@ApiOperation("获取问题的列表")
+ResultVO<QuestionPageVo> getQuestionList(@RequestParam("pageNo") Integer pageNo, @RequestParam("pageSize") Integer pageSize) {
+    ResultVO<QuestionPageVo> resultVO;
+    try {
+        QuestionPageVo questionPageVo = examService.getQuestionList(pageNo, pageSize);
+        resultVO = new ResultVO<>(0, "获取问题列表成功", questionPageVo);
+    } catch (Exception e) {
+        e.printStackTrace();
+        resultVO = new ResultVO<>(-1, "获取问题列表失败", null);
+    }
+    return resultVO;
+}
+```
+
+选择具体题库，则展示具体题库下的题目。也可以进行修改题库信息、删除题库或新增题库。
+
+修改题库信息，可以修改题库的名称，或新增、删除其中包含的题目。
+
+删除题库的操作，会将所有当前题库下的题目，与之解除关联。在具体的题库-题目 mapper 表中删除对应的映射。
+
+新增题库的操作则会要求填写题库的基本信息，而后可以选择需要添加入题库的题目。也可以在创建成功以后，再通过修改题库的功能，对题库的题目做管理。
+
+对于具体题目的操作，可以查看题目的详情，也可以对题目配置的属性做修改调整。
+
+```java
+@PostMapping("/question/update")
+@ApiOperation("更新问题")
+ResultVO<String> questionUpdate(@RequestBody QuestionVo questionVo) {
+    // 完成问题的更新
+    System.out.println(questionVo);
+    try {
+        examService.updateQuestion(questionVo);
+        return new ResultVO<>(0, "更新问题成功", null);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new ResultVO<>(-1, "更新问题失败", null);
+    }
+}
+```
+
+![题库模块](../_images/题库模块.png)
 
 ### 4.2 考卷模块
 
