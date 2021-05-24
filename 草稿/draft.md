@@ -2,15 +2,19 @@
 
 ## 摘要
 
+自区块链技术被确立为我国信息、科技领域的“顶层设计”，区块链作为核心技术的应用也愈发广泛。受新冠疫情的影响，线上教学在全国范围内迅速普及，一个交互好用、功能完备的线上考试系统作为线上教学的配套，十分重要。借区块链技术所提供的数据安全方面的保障能力，提出了一种「基于区块链技术的考试系统」解决方案。项目采用了前后端分离的解耦项目模型，其中前后端都采用了时下流行、成熟、经过企业级项目应用的检验的 SpringBoot 与 Vue。并且，使用新兴的国产区块链底层框架 Fisco Bcos，作为项目中区块链的技术实现。以此，提供一个操作简易、交互友好且数据安全  的线上考试系统，减轻老师工作流程中的负担，提高学校的管理效率。
+
 #### 关键字
 
-区块链；Fisco；在线考试系统；SpringBoot；Vue；
+区块链；Fisco Bcos；在线考试系统；SpringBoot；Vue；
 
 ## Abstract
 
+Since blockchain technology has been established as the "top-level design" in China's information and technology fields, the application of blockchain as a core technology has become more and more widespread. Due to the impact of the new crown epidemic, online teaching is rapidly spreading across the country, and it is important to have an interactive and functional online examination system as a complement to online teaching. Taking advantage of the data security capability provided by blockchain technology, a "blockchain technology-based examination system" solution is proposed. The project adopts a decoupled front and back-end project model, in which SpringBoot and Vue, which are popular, mature and tested in enterprise-level projects, are used for both front and back ends, and Fisco Bcos, an emerging domestic blockchain underlying framework, is used as the technical implementation of blockchain in the project. In order to provide an easy-to-use, interactive and data-secure online examination system, to reduce the burden of teachers' workflow and improve the efficiency of school management.
+
 #### Keywords
 
-Block-chain; Fisco; Online Exam-system; SpringBoot; Vue;
+Block-chain; Fiscos Bcos; Online Exam-system; SpringBoot; Vue;
 
 ## 一、绪论
 
