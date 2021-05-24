@@ -1,0 +1,79 @@
+\documentclass[fontset=ubuntu,zihao=-4,a4paper]{ctexart}
+
+%% 目录
+\usepackage{titletoc}
+\titlecontents{section}[3.8em]
+{\songti\zihao{-4}}
+{\contentslabel{4em}}{\hspace*{-4em}}
+{~\titlerule*[0.8pc]{$.$}~\contentspage}
+
+%% 字体
+\setmainfont{Times New Roman}
+% \setCJKmainfont{FandolSong}
+\newcommand{\zhongsong}{\CJKfontspec[Path=font/]{STZhongSong.ttf}}	%华文中宋
+\ctexset{
+	section = {
+        % format = \centering\bfseries\zihao{-2} \heiti,
+		format = \centering\zihao{-2} \heiti,
+		name = {第, 章}
+	},
+	subsection = {
+        % format = \bfseries\zihao{3} \heiti
+		format = \zihao{3} \heiti
+	},
+	subsubsection = {
+        % format = \bfseries\zihao{4} \heiti
+		format = \zihao{4} \heiti
+	}
+}
+
+%% 交叉引用
+\usepackage{hyperref}
+
+%% 图形支持宏包
+\usepackage{graphicx}               % 嵌入png图像，修改表格的整体大小
+\usepackage{booktabs}               % 三线表格中的上中下直线线型设置宏包
+
+%% 数学公式
+\usepackage{amsmath}                % AMS LaTeX宏包
+\usepackage{amssymb}                % 用来排版漂亮的数学公式
+\usepackage{amsbsy}
+\usepackage{mathrsfs}               % 英文花体字体
+
+%% 页边距调整
+\usepackage{setspace}				%设置间距
+\usepackage{calc}                   %包含textwidth,textheight
+\usepackage{geometry}                
+\geometry{top=2.5cm,bottom=2cm,left=2.5cm,right=2cm}
+
+%% 页眉页脚样式的定义方式
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}  
+\fancyhead[C]{\zihao{5}  \kaishu 武汉理工大学毕业设计（论文）}
+\fancyfoot[C]{~\zihao{5} \thepage~}
+\renewcommand{\headrulewidth}{0.65pt} 
+
+%%%%%%%%% 正文区 %%%%%%%%%
+\begin{document}
+\bibliographystyle{gbt7714-2005}     %论文引用格式
+%% 封面和前言
+\input{body/cover}
+\pagestyle{plain}
+\pagenumbering{Roman}
+\include{body/摘要}
+%% 目录
+\pagestyle{empty}
+\tableofcontents 
+\thispagestyle{empty}
+\newpage                            %使得后面页码从1开始
+
+%% 论文正文
+\pagestyle{fancy}
+
+\pagenumbering{arabic}                          %后面用阿拉伯数字记页码
+\setlength{\lineskip}{20pt}                     %设置行间距
+\setlength{\parskip}{0.5\baselineskip - 10pt}   %设置段间距
+
+\include{body/绪论}
+\end{document}

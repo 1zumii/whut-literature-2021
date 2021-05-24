@@ -1,0 +1,12 @@
+\section*{摘要}
+在利益证明（PoS）和许可区块链中，由验证者组成的委员会同意并签署每个新的交易区块。这些区块由网络中的所有用户进行验证、传播和存储。然而，变节攻击（Posterior Corruption）对这些设计构成了常见的威胁，因为对手可以在委员会验证者认证了一个区块之后破坏他们，并使用他们的签名密钥来认证另一个区块。设计高效、安全的数字签名用于PoS区块链，可以大幅降低节点的带宽、存储和计算需求，从而实现更高效的应用。
+
+我们提出了一个基于配对的前向安全多签名方案Pixel，该方案经过优化，可用于区块链中，实现了带宽、存储需求和验证工作的大幅节省。Pixel 签名由两个组元组成，无论签名者数量多少，都可以使用三个配对和一个指数进行验证，并支持将单个签名非交互式聚合成一个多签名。Pixel签名也是前向安全的，并且让签名者随着时间的推移演化他们的密钥，这样新的密钥就不能用于在旧的区块上签名，保护了区块链的变节攻击击。我们展示了如何将Pixel集成到任何PoS区块链中。接下来，我们在真实世界的PoS区块链实现中评估了Pixel，表明它在存储、带宽和区块验证时间方面产生了显著的节省。特别是，Pixel签名将1500笔交易的区块大小减少了35\%，区块验证时间减少了38\%。
+\addcontentsline{toc}{section}{摘要}    % 目录中加入
+
+\clearpage  % 分页
+
+\section*{Abstract}
+In Proof-of-Stake (PoS) and permissioned block chains, a committee of verifiers agrees and sign every new block of transactions. These blocks are validated, propagated, and stored by all users in the network. However, posterior corruptions pose a common threat to these designs, because the adversary can corrupt committee verifiers after they certified a block and use their signing keys to certify a different block. Designing efficient and secure digital signatures for use in PoS blockchains can substantially reduce bandwidth, storage and computing requirements from nodes, thereby enabling more efficient applications.We present Pixel, a pairing-based forward-secure multi-signature  scheme  optimized  for  use  in  blockchains, that achieves substantial savings in bandwidth, storage requirements, and verification effort.Pixel signatures consist of two group elements, regardless of the number of signers, can be verified using three pairings and one exponentiation, and support non-interactive aggregation of individual signatures into a multi-signature.Pixel signatures are also forward-secure and let signers evolve their keys over time, such that new keys cannot be used to sign on old blocks, protecting against posterior corruptions attacks on blockchains. We show how to integrate Pixel into any PoS blockchain. Next, we evaluate Pixel in a real world PoS blockchain implementation, showing that it yields notable savings in storage, bandwidth, and block verification time. In particular,Pixel signatures reduce the size of blocks with1500transactions by35\%and reduce block verification time by 38\%.
+
+\addcontentsline{toc}{section}{Abstract}    % 目录中加入
