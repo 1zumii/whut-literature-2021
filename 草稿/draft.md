@@ -200,7 +200,98 @@ Vue 的技术基础是将根节点组件挂载在页面的一个 DOM 元素上�
 - 老师：题库模块、考试模块、考卷模块
 - 管理员：题库模块、考试模块、考卷模块、用户模块
 
-### 3.3 请求-响应
+### 3.3 Http 请求响应
+
+#### 3.3.1 前端请求
+
+*front/Requester.js/post函数*
+
+```js
+function post(url, params = {}, needToken = true) {
+    const {token} = TokenManager.getToken()
+    if (needToken && !token) {
+        Logger.error('not found token')
+        return Promise.reject({
+            code: 1401,  // 浏览器的401
+            msg: 'not found token'
+        })
+    }
+    const headers = {}
+    if (needToken) {
+        headers.authorization = `bearer ${token}`
+    }
+    Logger.log('⬆️', {url, params})
+    return axios({
+        method: 'post',
+        url: url,
+        responseType: 'json',
+        data: params,
+        headers
+    }).then(response => {
+        const {data, status, statusText} = response
+        Logger.log('⬇️', data)
+        return data
+    }).catch(reason => {
+        const {status, statusText} = reason.response
+        Logger.error('⬇️', status, statusText, reason.response)
+        throw reason.response
+    })
+}
+```
+
+前端的请求发起主要依赖于基于 xhr 实现的第三方库 axios。axios 由于请求的异步延时特性，所以使用了 Promise 进行了封装。
+
+前端对后端的请求过程中，请求的 url 前缀部分都是相同的。此外，对于常用的 POST、GET 方法，请求头部分也有相似的部分，例如，POST 请求统一使用“application/json”的 content-type，并将具体的请求数据 json 序列化后，通过 axios 的 data 字段写入请求体中。因而，可以对 axios 再做一层定制，封装成项目的工具函数集合 Requester 中 post、get。
+
+在业务流程中，使用 Requester，仅仅需要根据请求的方法，调用对应的 post、get，传入对应的 api 的 url、请求参数 params，和是否需要 token 验证的标志位 needToken。而无需关心其中具体的请求配置，以及响应的错误处理。获取响应以后再通过一层 Promise 解构其中真正需要的响应数据，使得在业务层面对于请求-响应中的细节是透明无感知的，从实际意义上的减轻了业务开发过程中的心智负担。并可以在工具函数 Requester 中加入日志输出，以便在线上部署后，通过日志迅速定位错误信息。
+
+#### 3.3.2 后端响应
+
+*back/ResultVO.java*
+
+```java
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL) 
+public class ResultVO<T> {
+
+    public ResultVO(Integer code, String msg, T data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
+
+    public ResultVO() {}
+
+    private Integer code;
+
+    private String msg = "";
+
+    private T data;
+}
+```
+
+*back/ExamController.java/getExamRecordList函数*
+
+```java
+@GetMapping("/record/list")
+@ApiOperation("获取当前用户的考试记录")
+ResultVO<List<ExamRecordVo>> getExamRecordList(HttpServletRequest request) {
+    ResultVO<List<ExamRecordVo>> resultVO;
+    try {
+        // 拦截器里设置上的用户id
+        String userId = (String) request.getAttribute("user_id");
+        // 下面根据用户账号拿到他(她所有的考试信息)，注意要用VO封装下
+        List<ExamRecordVo> examRecordVoList = examService.getExamRecordList(userId);
+        resultVO = new ResultVO<>(0, "获取考试记录成功", examRecordVoList);
+    } catch (Exception e) {
+        e.printStackTrace();
+        resultVO = new ResultVO<>(-1, "获取考试记录失败", null);
+    }
+    return resultVO;
+}
+```
+
+后端的响应部分更多的是借助 SpringBoot 中 starter-web 启动器所提供的相关框架能力。针对响应体的自定义封装，主要是使用了 ResultVO 这一值对象（Value Object）。其中定义了针对业务而言的状态码 code，即业务操作成功为 0，业务操作失败则为非 0。随之附带 msg 作为扩展的信息说明字段。并且 ResultVO 通过泛型 \<T> 注入具体响应时的数据类型。例如，getExamRecordList 函数中展示的，针对当前业务操作需要的是 List\<ExamRecordVo> 的数据类型，因而，在 try-catch 前初始化的响应结果 resultVO 就是 ResultVO\<List\<ExamRecordVo>>。
 
 ### 3.4 数据持久层设计
 
