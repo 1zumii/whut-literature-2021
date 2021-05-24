@@ -554,6 +554,45 @@ export default {
 
 ### 4.3 考试模块
 
+所有的用户都有权限进入考试模块。首先展示的是所有的考试，所以在进入页面前会先请求所有的考试信息。
+
+```js
+function getExamCardList() {
+  return axios({
+    url: api.ExamCardList,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+```
+
+```java
+@GetMapping("/card/list")
+@ApiOperation("获取考试列表，适配前端卡片列表")
+ResultVO<List<ExamCardVo>> getExamCardList() {
+    // 获取考试列表卡片
+    ResultVO<List<ExamCardVo>> resultVO;
+    try {
+        List<ExamCardVo> examCardVoList = examService.getExamCardList();
+        resultVO = new ResultVO<>(0, "获取考试列表卡片成功", examCardVoList);
+    } catch (Exception e) {
+        e.printStackTrace();
+        resultVO = new ResultVO<>(-1, "获取考试列表卡片失败", null);
+    }
+    return resultVO;
+}
+```
+
+其中，可以进行条件筛选。可以按照已结束的考试、参加过的考试、可参加的仍在有效时间内的、未开始的，进行对考试列表的筛选。如果是展示的参加过的考试，点击事件会展示考试的详情。包括考试的答案、问题的正确答案、正确答案的解析，以及考试的得分。
+
+在考试列表中，可以选择考试参加。点击选择的考试将跳转到答题系统中，即可进行答题。答题过程中将会进行计时操作。提交答案前，将会进行检查是否有未作答的题目，如有则拒绝提交。提交考试后将跳转回考试模块的最初页面。
+
+![答题系统](../_images/答题系统.png)
+
+创建考试并不是所有用户角色都拥有的权限。因而，创建考试的按钮需要根据当前登录的用户角色，通过 v-if 的方式决定是否渲染。点击创建考试，需要选择考试使用的考卷，以及填写考试的基本信息、起始时间、结束时间，以及时间限制。
+
 ![考试模块](../_images/考试模块.png)
 
 ### 4.4 用户管理模块
