@@ -209,17 +209,7 @@ Vue 的技术基础是将根节点组件挂载在页面的一个 DOM 元素上�
 ```js
 function post(url, params = {}, needToken = true) {
     const {token} = TokenManager.getToken()
-    if (needToken && !token) {
-        Logger.error('not found token')
-        return Promise.reject({
-            code: 1401,  // 浏览器的401
-            msg: 'not found token'
-        })
-    }
-    const headers = {}
-    if (needToken) {
-        headers.authorization = `bearer ${token}`
-    }
+    ... ...
     Logger.log('⬆️', {url, params})
     return axios({
         method: 'post',
@@ -301,7 +291,161 @@ ResultVO<List<ExamRecordVo>> getExamRecordList(HttpServletRequest request) {
 
 ### 3.5 鉴权设计
 
+针对前后端分离的项目结构，鉴权设计主要是借助 JWT（JavaScript Web Token）这一通用的解决方案完成。
 
+#### 3.5.1 前端鉴权
+*front/TokenManager.js*
+
+```js
+// 设置 Token
+function setToken({token, userInfo}, remember = false) {
+    if (remember) {
+        // 写入 localStorage
+        localStorage.setItem(...)
+    }
+    // 在 store 中设置值
+    store.commit(...)
+	... ...
+}
+
+// 获取 Token
+function getToken() {
+    let token, userInfo
+    if (store.getters.getToken) {
+        token = store.getters.getToken
+    }
+    if (store.state.auth.userInfo) {
+        userInfo = store.state.auth.userInfo
+    }
+    if (!token && localStorage.getItem(tokenKey)) {
+        token = localStorage.getItem(tokenKey)
+        userInfo = JSON.parse(localStorage.getItem(userInfoKey))
+        // 在 store 中设置值
+        store.commit(...)
+        ... ...
+    }
+    return {
+        token, userInfo
+    }
+}
+
+// 移除 Token
+function removeToken() {
+    ... ...
+}
+```
+
+前端部分对于 Token，以及可以与 Token 视作相关联的敏感用户信息 UserInfo，都使用相同的存储管理思路。
+
+针对登录时勾选了“记住登录状态”的情况，将 Token 以及 UserInfo 写入浏览器提供的 localStorage 中。localStorage 是浏览器提供的一种缓存能力，写入 localStorage 中的键值对，可以持久化存储，使得在浏览器退出后也不会丢失。
+
+针对普通的登录情况，则将这些重要数据写入 Vuex 提供的 store 中，方便各组件获取和修改。
+
+如果重新打开浏览器进入页面，且有勾选“记住登录状态”的情况，store 中已有的 Token 是因为进程退出而丢失的，然而 localStorage 中可能还存有未过期的 Token。因而，在 TokenManager 的 getToken 函数中，需要首先检查 store 中是否有保存 Token，如果没有则再在 localStorage 中读取。如果 localStorage 中读取成功，则说明用户是有勾选了“记住登录状态”，则需要将 Token 作为函数返回值之前，将读取到的 Token 存储到 store 中。
+
+Token 存储的情况有多种，但是移除的时候无需关心是否存在，只需要一并清空 store 和 localStorage 中可能存在的键值对即可。
+
+*front/Requester.js/post函数*
+
+```js
+function post(url, params = {}, needToken = true) {
+    const {token} = TokenManager.getToken()
+    if (needToken && !token) {
+        Logger.error('not found token')
+        return Promise.reject({
+            code: 1401,  // 浏览器的401
+            msg: 'not found token'
+        })
+    }
+    const headers = {}
+    if (needToken) {
+        headers['Access-Token'] = `bearer ${token}`
+    }
+    ... ...
+}
+```
+
+在 Requester 工具函数中，请求如果设置了 needToken 的标志位，则使用 TokenManager 的 getToken 函数中读取可能存在的 Token。如此设计，在请求的代码编写中，将两个模块解耦，仅仅通过函数调用相互关联，符合“高内聚，低耦合”的设计原则。
+
+如果需要 Token 而 getToken 无法返回有效 Token 时，则需要进行错误的处理。遵照 axios 的 Promise 风格 api，错误处理也使用相似的 Promise.reject。其中自定义状态码设置为“1401”，意图借 HTTP 状态码的 401 相同的含义，再前加上 1，以示区别。
+
+getToken 成功返回 Token 后，则通过请求头中的 Access-Token 字段，在请求中携带上 Token。
+
+*front/Requester.js/handleRequestError函数*
+
+```js
+function handleRequestError(error) {
+    if (
+        (
+            error && typeof (error) === 'object' &&
+            error.code > 1400 && error.code < 1500
+        ) || error.status === 401
+    ) {
+        TokenManager.removeToken()
+    }
+    Logger.error(error)
+}
+```
+
+对于如上的需要 Token，而又没有 Token 的特殊处理情况，则通过 handleRequestError 对于前面定义的特殊状态码“1401”做处理动作，在当前的项目中，仅仅只是调用了 removeToken。但是，将这个针对 Token 的错误处理环节的独立抽离，也是意图方便以后可能会加入的新的错误处理逻辑，使得项目代码留存有一定的扩展空间。
+
+#### 3.5.2 后端鉴权
+
+back/LoginInterceptor.java/preHandle函数
+
+```java
+@Override
+public boolean preHandle(... ...) throws Exception {
+    ... ...
+    // 注意要和前端适配Access-Token属性，前端会在登陆后的每个接口请求头加Access-Token属性
+    String token = request.getHeader("Access-Token");
+    ... ...
+    if (token != null) {
+        // 请求中是携带参数的
+        Claims claims = JwtUtils.checkJWT(token);
+        if (claims == null) {
+            // 返回null说明用户篡改了token，导致校验失败
+            sendJsonMessage(response, JsonData.buildError("token无效，请重新登录"));
+            return false;
+        }
+        ... ...
+        return true;
+    }
+    ... ...
+    return false;
+}
+```
+
+后端的鉴权与前端部分相对应，而后端的请求鉴权主要是通过 SpringBoot 提供的拦截器 Interceptor 框架能力完成。拦截器通过配置对应的拦截规则，调用对应的拦截器，可以实现需要鉴权的请求在进入实际的业务代码 Controller 层之前，在拦截器中进行鉴权。将其这部分鉴权逻辑单独通过拦截器实现，目的是为了同业务代码独立开，互相不影响。如此的设计，也是遵从了“低耦合”的原则思想。
+
+```java
+public class JwtUtils {
+    // 构建 token 的主题
+    private static final String SUBJECT = ... ...;
+    // 过期时间为1天
+    private static final long EXPIRE = 1000 * 60 * 60 * 24;
+
+    private static final String APP_SECRET = ... ...;
+
+    public static String genJsonWebToken(User user) {
+        ... ...
+        return Jwts.builder().setSubject(SUBJECT)
+                // 下面3行设置 token 中间字段，携带用户的信息
+                ... ...
+                // 设置过期时间
+                ... ...
+                // 生成的结果字符串太长，这里压缩下
+                .compact();
+    }
+
+    /* 校验 token */
+    public static Claims checkJWT(String token) {
+        ... ...
+    }
+}
+```
+
+将 jsonwebtoken 提供的 api 能力针对项目的业务情况再进行一次封装，成为 JwtUtils 工具。对外仅提供了对 Token 的创建、校验能力。
 
 ### 3.6 数据库结构设计
 
