@@ -451,7 +451,7 @@ public class JwtUtils {
 
 #### 3.6.1 数据库概念设计
 
-
+![ER图](../_images/ER图.png)
 
 #### 3.6.2 数据库逻辑设计
 
@@ -516,6 +516,8 @@ ResultVO<String> questionUpdate(@RequestBody QuestionVo questionVo) {
 ![题库模块](../_images/题库模块.png)
 
 ### 4.2 考卷模块
+
+![考卷模块](../_images/考卷模块.png)
 
 ### 4.3 考试模块
 
