@@ -87,6 +87,10 @@
 \usepackage{geometry}                
 \geometry{top=2.5cm,bottom=2cm,left=2.5cm,right=2cm}
 
+%% 设置间距
+\setlength{\lineskip}{20pt}                     %设置行间距
+\setlength{\parskip}{0.5\baselineskip - 10pt}   %设置段间距
+
 %% 页眉页脚样式的定义方式
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -97,7 +101,8 @@
 
 %%%%%%%%% 正文区 %%%%%%%%%
 \begin{document}
-\bibliographystyle{gbt7714-2005}     %论文引用格式
+%% 论文引用格式
+\bibliographystyle{gbt7714-2005}     
 %% 封面和前言
 \input{body/cover}
 \pagestyle{plain}
@@ -122,6 +127,10 @@
 \include{body/系统实现}
 \include{body/系统测试}
 \include{body/总结与展望}
+
+% \addcontentsline{toc}{section}{参考文献}
+% \bibliography{bibfile}
+% \clearpage
 
 \include{body/致谢}
 
