@@ -9,7 +9,9 @@
 
 %% 字体
 \setmainfont{Times New Roman}
-% \setCJKmainfont{FandolSong}
+%\setmonofont{Source Code Pro}
+%\setmonofont{Droid Sans Mono}
+\setmonofont[Path=font/]{Monaco.ttf}
 \newcommand{\zhongsong}{\CJKfontspec[Path=font/]{STZhongSong.ttf}}	%华文中宋
 \ctexset{
 	section = {
@@ -30,11 +32,50 @@
 %% 交叉引用
 \usepackage{hyperref}
 
+%% 代码块
+\usepackage{listings}
+\usepackage{color}
+\definecolor{lightgray}{RGB}{244,247,248}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{purple}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{red}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{darkgray}\ttfamily,
+  stringstyle=\color{blue}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
 %% 图形支持宏包
 \usepackage{graphicx}               % 嵌入png图像，修改表格的整体大小
 \usepackage{booktabs}               % 三线表格中的上中下直线线型设置宏包
 
 %% 数学公式
+% 学位论文版权使用授权书那边的方块可能用到
 \usepackage{amsmath}                % AMS LaTeX宏包
 \usepackage{amssymb}                % 用来排版漂亮的数学公式
 \usepackage{amsbsy}
