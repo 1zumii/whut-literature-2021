@@ -82,6 +82,10 @@
 \usepackage{amsbsy}
 \usepackage{mathrsfs}               % 英文花体字体
 
+%% 设置图标的caption没有冒号
+\usepackage{caption}
+\captionsetup[table]{labelsep=space}
+
 %% 页边距调整
 \usepackage{setspace}				%设置间距
 \usepackage{calc}                   %包含textwidth,textheight
@@ -92,11 +96,17 @@
 \setlength{\lineskip}{20pt}                     %设置行间距
 \setlength{\parskip}{0.5\baselineskip - 10pt}   %设置段间距
 
+%% 标题间距
+% \RequirePackage[indentafter]{titlesec}          % \titlespacing*
+% \titlespacing*{\section}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+% \titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+% \titlespacing*{\subsubsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+
 %% 页眉页脚样式的定义方式
 \usepackage{fancyhdr}
 \fancyhf{} 
-\setlength{\headsep}{20pt}
-\setlength{\headheight}{0cm}
+% \setlength{\headsep}{20pt}
+% \setlength{\headheight}{0cm}
 % \setlength{\textwidth}{\paperwidth - 4.5cm}
 % \setlength{\textheight}{\paperheight - 6.08cm - \headsep - \footskip}
 % \setlength\topmargin{0.17cm}
@@ -143,7 +153,8 @@
 \include{body/总结与展望}
 
 \addcontentsline{toc}{section}{参考文献}
-\bibliography{bibfile}
+% \bibliography{bibfile}
+\include{body/reference}
 \clearpage
 
 \include{body/致谢}
