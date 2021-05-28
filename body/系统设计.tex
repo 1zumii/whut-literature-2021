@@ -277,3 +277,40 @@ public class JwtUtils {
 \end{figure}
 
 \subsubsection{数据库逻辑设计}
+\begin{lstlisting}
+users(
+    userId, username, password, roleId, avatar,
+    nickname, description, createTime, updateTime
+)
+exam_paper( examPaperId, name, avatar, questionIds, score, creatorId )
+exam( id, name, avatar, startDate, endDate, timeLimit, creatorId )
+question_bank( id, name, questionIds, creatorId, ... )
+question( id, name, description, optionIds, ... )
+\end{lstlisting}
+\subsubsection{数据表字段说明}
+\paragraph{users}
+\begin{itemize}
+    \item userId 为表的主键，用于唯一标识一个用户；
+    \item username 为用户的登录时所用名称，与 userId 一样不可重复；
+    \item avatar 存储用户头像；
+    \item roleId 存储用户对应的权限角色的枚举值；
+    \item nickname 存放用户的昵称，可重复，仅用于展示；
+    \item password 为用户登录时所使用的密码；
+\end{itemize}
+\paragraph{exam\_paper}
+\begin{itemize}
+    \item examPaperId 为表的主键，用于唯一标识一张考卷；
+    \item name 存放考卷的名称；
+    \item avatar 存放考卷的封面，可为空；
+    \item questionIds 存放考卷拥有的题目的 id 集合；
+    \item score 表示考卷的总分值；
+    \item creatorId 存放创建考卷的用户的 id（外键）；
+\end{itemize}
+\paragraph{exam}
+\begin{itemize}
+    \item id 为表的主键，用于唯一标识一场考试；
+    \item name 表示考试的名称；
+    \item startDate、endDate 表示考试的有效日期范围；
+    \item timeLimit 表示考试的答题时间；
+    \item creatorId 存放创建考试的用户的 id（外键）；
+\end{itemize}
