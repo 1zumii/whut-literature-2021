@@ -94,10 +94,14 @@
 
 %% 页眉页脚样式的定义方式
 \usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhf{}  
-\fancyhead[C]{\zihao{5}  \songti 武汉理工大学毕业设计（论文）}
-\fancyfoot[C]{~\zihao{5} \thepage~}
+\fancyhf{} 
+\setlength{\headsep}{20pt}
+\setlength{\headheight}{0cm}
+% \setlength{\textwidth}{\paperwidth - 4.5cm}
+% \setlength{\textheight}{\paperheight - 6.08cm - \headsep - \footskip}
+% \setlength\topmargin{0.17cm}
+\fancyhead[C]{\zihao{5}  \songti 武汉理工大学毕业设计（论文）\\}
+\fancyfoot[C]{\zihao{5} \thepage}
 \renewcommand{\headrulewidth}{0.65pt} 
 
 %%%%%%%%% 正文区 %%%%%%%%%
@@ -117,6 +121,15 @@
 
 %% 论文正文
 \pagestyle{fancy}
+
+% \newpage
+% 如你所见，本页为了解决这个第一行文字与页眉分割线重合问题，我们添加了一个空白页。
+% \vspace*{\fill}
+% \begin{center}   
+% 	{\color{red}\fontsize{50} 1此页记得删除}
+% \end{center}
+% \vspace*{\fill}
+% \newpage
 
 \pagenumbering{arabic}                          %后面用阿拉伯数字记页码
 \setlength{\lineskip}{20pt}                     %设置行间距
