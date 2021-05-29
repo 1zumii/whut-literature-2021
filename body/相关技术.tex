@@ -16,7 +16,7 @@ Spring 是目前后端领域生态最为活跃，且发展迅猛的开源框架�
 脱胎于繁琐配置的 Spring，SpringBoot 是由 Pivota 团队提供的全新框架，其设计目的旨在简化 Spring 应用的初始化构建以及开发过程。SpringBoot 的理念是“约定大于配置”，且有如下的特点：
 \begin{itemize}
     \item 开箱即用，从根本上实现更快的入门体验；
-    \item 内嵌 Tomcat、Jetty 或 Undertow，使得开发者无需额外部署 WAR；
+    \item 内嵌 Tomcat、Jetty 或 Undertow，使得开发者无需额外部署 WAR\upcite{ref1}；
     \item 提供了丰富的封装好的 starter 依赖，用于简化开发过程中的构建配置；
     \item 自动配置 Spring，且具有良好的扩展性。如有需要，简单配置便可引入第三方库；
     \item 无代码生成、无需编写XML；
@@ -27,7 +27,7 @@ SpringBoot 具有丰富的项目应用范例、良好的社区生态与开发体
 \subsection{SpringData JPA}
 历史车轮滚滚向前，最初 Java 后端开发框架技术栈的三驾马车 SSH（Struts、Spring、Hibernate）这一 JavaEE 框架风靡一时。而随着技术更新迭代，其中的 Struts 被 SpringMVC 所替代，再后来随着开箱即用、自动配置的 SpringBoot 的出现逐渐让开发者从 Spring + SpringMVC 的阵营中转投。Hibernate 作为技术栈中的数据持久化 ORM 框架，也出现了许多优秀的横向竞品，例如 MyBatis、JPA。这些 ORM 框架各有优劣，而 MyBatis 更受国内大部分的开发者欢迎。然而，MyBatis 的无论是 XML 写法，亦或是注解的使用方式，mapper 的代码编写总是让人觉得略有心烦。相较之下，SpringData JPA 无需 mapper 的使用方式更为简洁。
 
-SpringData JPA 作为 Spring 官方推荐的数据库访问组件，简化了各种数据库的访问操作。在 SpringData JPA 中数据访问层对象（DAO）的实现，是通过 Repository 作为 DAO 层接口来操作实体类所对应的数据表。Repository 模式是领域驱动设计中另一个经典的模式。当一个接口继承 JpaRepository 接口之后便自动具备了一系列常用的数据操作方法。因此，在抽象出业务流程中的实体（Entity）以后，在其实体类加上  \lstinline!@Entity! 的注解，便可以将实体类与 Repository 接口相关联，并提供了基础的增删改查，乃至分页等，实际业务中常见的基础数据库操作。这样的实现极大的省去了后端开发中的一部分基础代码编写，减轻了后端开发过程中的心智负担。
+SpringData JPA 作为 Spring 官方推荐的数据库访问组件，简化了各种数据库的访问操作。在 SpringData JPA 中数据访问层对象（DAO）的实现，是通过 Repository 作为 DAO 层接口来操作实体类所对应的数据表。Repository 模式是领域驱动设计中另一个经典的模式。当一个接口继承 JpaRepository 接口之后便自动具备了一系列常用的数据操作方法。\upcite{ref4}因此，在抽象出业务流程中的实体（Entity）以后，在其实体类加上  \lstinline!@Entity! 的注解，便可以将实体类与 Repository 接口相关联，并提供了基础的增删改查，乃至分页等，实际业务中常见的基础数据库操作。这样的实现极大的省去了后端开发中的一部分基础代码编写，减轻了后端开发过程中的心智负担。
 
 \subsection{Vue.js}
 自从实际的项目应用的规模不断膨胀，前端部分与用户交互的业务也随之变得复杂。传统项目中，项目的分层结构是 MVC 的三层模型：Model 层、View 层、Controller 层。但是在前端业务逻辑十分复杂的情况下，View 层显得十分的臃肿，静态模板的语法也显现出落后于时代潮流的笨拙与不优雅。因此，使用前后端分离的项目，将项目的前端部分与后端的数据、业务操作解耦。在这样的发展潮流中，涌现了许多性能优异、理念前卫的前端框架：Angular、React、Vue等。其中，Vue 和 React 都遵从“数据驱动视图”的 MVVM 模型的理念。类似于函数式的思想 \lstinline!View = F(Data)! 数据的更新驱动着视图的重新渲染。而其中又将业务逻辑代码、页面展示代码抽象做组件（Component），发挥了组件复用的优势。
