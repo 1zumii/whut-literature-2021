@@ -82,9 +82,15 @@
 \usepackage{amsbsy}
 \usepackage{mathrsfs}               % 英文花体字体
 
+%% 图表按章节编号
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
 %% 设置图标的caption没有冒号
 \usepackage{caption}
-\captionsetup[table]{labelsep=space}
+% \captionsetup[table]{labelsep=space}
+\DeclareCaptionLabelSeparator{twospace}{\ ~}
+\captionsetup{labelsep=twospace}
 
 %% 页边距调整
 \usepackage{setspace}				%设置间距
@@ -95,6 +101,9 @@
 %% 设置间距
 \setlength{\lineskip}{20pt}                     %设置行间距
 \setlength{\parskip}{0.5\baselineskip - 10pt}   %设置段间距
+
+%% 参考文献上标
+\newcommand{\upcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}}
 
 %% 标题间距
 % \RequirePackage[indentafter]{titlesec}          % \titlespacing*
