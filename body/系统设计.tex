@@ -6,7 +6,7 @@
     \includegraphics[width=\linewidth]{_images/前端模型.png}
     \caption{前端架构模型}
 \end{figure}
-Vue 的技术基础是将根节点组件挂载在页面的一个 DOM 元素上，而根节点组件由可由多个组件组成，如此向下细分成子组件。组件系统是 Vue 的另一个重要概念，因为它是一种抽象，允许我们使用小型、独立和通常可复用的组件构建大型应用。\upcite{ref19}
+Vue 的技术基础是将根节点组件挂载在页面的一个 DOM 元素上，而根节点组件由可由多个组件组成，如此向下细分成子组件。组件系统是 Vue 的另一个重要概念，因为它是一种抽象，允许我们使用小型、独立和通常可复用的组件构建大型应用。\upcite{refAdd19}
 
 组件的数据来源可以划分为：Props、Data、Computed。父子组件之间的数据通信通过 Props，而 Vue 的设计理念中，数据是自上而下单向流动。
 
@@ -37,7 +37,7 @@ Vue 的技术基础是将根节点组件挂载在页面的一个 DOM 元素上�
 \end{figure}
 项目系统根据功能划分成几个功能模块：题库模块、用户模块、考卷模块、考试模块。
 
-按照权限分类用户角色，其对应的功能模块为：\upcite{ref4}
+按照权限分类用户角色，其对应的功能模块为：\upcite{ref4,refAdd8}
 \begin{itemize}
     \item 学生：考试模块
     \item 老师：题库模块、考试模块、考卷模块
@@ -238,7 +238,7 @@ public boolean preHandle(... ...) throws Exception {
     return false;
 }
 \end{lstlisting}
-后端的鉴权与前端部分相对应，而后端的请求鉴权主要是通过 SpringBoot 提供的拦截器 \lstinline!Interceptor! 框架能力完成。拦截器通过配置对应的拦截规则，调用对应的拦截器，可以实现需要鉴权的请求在进入实际的业务代码 \lstinline!Controller! 层之前，在拦截器中进行鉴权。将其这部分鉴权逻辑单独通过拦截器实现，目的是为了同业务代码独立开，互相不影响。如此的设计，也是遵从了“低耦合”的原则思想。
+后端的鉴权与前端部分相对应，而后端的请求鉴权主要是通过 SpringBoot 提供的拦截器 \lstinline!Interceptor! 框架能力完成。\upcite{refAdd9}拦截器通过配置对应的拦截规则，调用对应的拦截器，可以实现需要鉴权的请求在进入实际的业务代码 \lstinline!Controller! 层之前，在拦截器中进行鉴权。将其这部分鉴权逻辑单独通过拦截器实现，目的是为了同业务代码独立开，互相不影响。如此的设计，也是遵从了“低耦合”的原则思想。
 \begin{lstlisting}[language=Java]
 public class JwtUtils {
     // 构建 token 的主题

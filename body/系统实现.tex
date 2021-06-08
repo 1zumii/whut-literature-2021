@@ -2,7 +2,7 @@
 \subsection{题库模块}
 \begin{figure}[hb]
     \centering
-    \includegraphics[width=\linewidth]{_images/题库模块截图.png}
+    \includegraphics[width=\linewidth]{_images/题库模块截图.jpeg}
     \caption{题库模块}
 \end{figure}
 进入题库模块前需要先检查是否有进入的权限，如果没有则需要一定的 403 反馈。正常操作流程下，没有权限是无法通过点击事件进入题库，但也可能通过浏览器的地址栏 URL，通过路由器强行渲染出对应的题库 \lstinline!View! 组件，因此仍是需要在进入模块前进行权限检查。
@@ -113,7 +113,7 @@ export default {
 
 修改用户和新增用户类似，也需要判断新的 username 是否已存在，如果不存在，则将修改后的信息更新到数据库。
 
-删除用户仅仅将用户从 user 表中删除，而不删除所有相关联的其余表中的 creatorId（或将其设置为 -1）。这样就能保证其他原先创建的考卷、题库、题目，不会受到其创建人的用户被删除，而出现异常情况。其 creatorId 的失效也仅仅影响了查询部分。\upcite{ref7,ref11,ref17}
+删除用户仅仅将用户从 user 表中删除，而不删除所有相关联的其余表中的 creatorId（或将其设置为 -1）。这样就能保证其他原先创建的考卷、题库、题目，不会受到其创建人的用户被删除，而出现异常情况。其 creatorId 的失效也仅仅影响了查询部分。\upcite{ref7,ref22,ref17}
 
 \begin{figure}[htb]
     \centering
