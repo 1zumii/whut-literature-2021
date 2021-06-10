@@ -268,6 +268,7 @@ public class JwtUtils {
 
 将 jsonwebtoken 提供的 api 能力针对项目的业务情况再进行一次封装，成为 \lstinline!JwtUtils! 工具。对外仅提供了对 Token 的创建、校验能力。
 
+
 \subsection{数据库结构设计}
 \subsubsection{数据库概念设计}
 \begin{figure}[htb]
@@ -315,6 +316,20 @@ question( id, name, description, optionIds, ... )
     \item creatorId 存放创建考试的用户的 id（外键）；
 \end{itemize}
 
+\subsection{区块链接入层设计}
+项目中数据的上链，主要通过Fisco Bcos框架所提供的底层能力来将区块链接入项目系统中。首先需要对于项目中需要使用区块链来进行数据维护的业务实体，用 Solidity 语言进行相应的智能合约编写（如图中 \lstinline!Contract.sol! 所示）。然后再通过Fisco Bcos所提供的合约编译工具，将 \lstinline!Contract.sol! 编译成为 \lstinline!Contract.java!。使用这个合约Java类来开发应用，可以极大简化用户的代码。在项目的开发过程中，需要部署和调用合约时，可以调用该合约类的对应方法，传入指定参数即可。
+
+其中在配置方面，需要在项目中引入Fisco Bcos提供的Java SDK依赖，以及配置相应的证书，来保证 \lstinline!Contract.java! 能够和链上合约进行交互。
+
+从项目后端模型来看，区块链接入层主要是通过后端的 Service 层来进行调度、管理。这是由于数据的上链过程，与业务逻辑中产生的数据进行持久化的过程是十分相似的。因而，在 Service 层将数据上链与数据在数据库的中持久化，进行抽象整合，使得对于 Service 层之外，这些操作都是一致且透明的。降低了层级之间的耦合程度，为项目后期潜在的扩展保留了空间。
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\linewidth]{_images/区块链接入层模型.png}
+    \caption{区块链接入层模型}
+\end{figure}
+
+
 \subsection{章节小结}
 本章主要针对项目的实际开发，基于前一章节需求分析的相应要求，进行了模块层面的构思和设计。
 
@@ -324,4 +339,6 @@ question( id, name, description, optionIds, ... )
 
 此外还着重对项目中使用的核心技术实现做了一定的设计。诸如前后端交互中，请求响应通信交互过程中的逻辑设计。以及用户对项目功能使用的权限划分中尤为重要的鉴权过程的逻辑设计，和对实际项目使用的过程中，鉴权部分可能出现的问题，针对性地进行了代码层面的覆盖。
 
-最后是对项目的实际业务流程中的实体（Entity）进行了抽象，分析了相互之间的关系（Relation），和其必要的属性。主要通过E-R图和数据库表结构设计的方式展现。
+而后是对项目的实际业务流程中的实体（Entity）进行了抽象，分析了相互之间的关系（Relation），和其必要的属性。主要通过E-R图和数据库表结构设计的方式展现。
+
+最后还对项目中的区块链接入层做了一些简述，其中重点着眼于如何在项目中使用Fisco Bcos所提供的框架能力，和项目又是怎样通过这些框架能力使用智能合约，从而实现数据上链的需求。
