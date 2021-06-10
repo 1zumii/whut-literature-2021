@@ -164,10 +164,12 @@ ResultVO<List<ExamCardVo>> getExamCardList() {
 创建考试并不是所有用户角色都拥有的权限。因而，创建考试的按钮需要根据当前登录的用户角色，通过 
 \lstinline!v-if! 的方式决定是否渲染。点击创建考试，需要选择考试使用的考卷，以及填写考试的基本信息、起始时间、结束时间，以及时间限制。\upcite{ref18}
 
-\begin{figure}[htb]
+\begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{_images/考试模块.png}
     \caption{考试模块}
 \end{figure}
 
 
+\subsection{章节小结}
+本章主要是针对系统设计章节，划分出的系统的四个核心功能模块：题库、考卷、用户、考试模块，进行了针对性的实现层面的阐述。其中着重通过业务逻辑的伪代码，用户操作的流程图等形式，配以相应的文字说明，来阐明项目中对于这几个核心模块的实现情况。

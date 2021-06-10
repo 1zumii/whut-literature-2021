@@ -29,7 +29,7 @@ Vue 的技术基础是将根节点组件挂载在页面的一个 DOM 元素上�
 
 针对敏感数据需要上链的 Service，通过 Fisco Bcos 提供的 SDK，接入预先编译成 Java 文件的智能合约。而智能合约由通过密钥对的形式连接至区块链节点组成的网络。
 
-\subsection{模块划分}
+\subsection{功能模块划分}
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\linewidth]{_images/功能模块划分.png}
@@ -44,7 +44,7 @@ Vue 的技术基础是将根节点组件挂载在页面的一个 DOM 元素上�
     \item 管理员：题库模块、考试模块、考卷模块、用户模块
 \end{itemize}
 
-\subsection{Http 请求响应}
+\subsection{Http 请求响应设计}
 \subsubsection{前端请求}
 \noindent\textit{front/Requester.js/post函数}
 \begin{lstlisting}
@@ -314,3 +314,14 @@ question( id, name, description, optionIds, ... )
     \item timeLimit 表示考试的答题时间；
     \item creatorId 存放创建考试的用户的 id（外键）；
 \end{itemize}
+
+\subsection{章节小结}
+本章主要针对项目的实际开发，基于前一章节需求分析的相应要求，进行了模块层面的构思和设计。
+
+首先从项目的架构模型进行入手，由于采用的是前后端分离的B/S模型，所以总体的架构模型也分为前后端两个方面去进行设计。其中区块链存储数据的接入层也被归整于后端的模型设计中。
+
+针对需求分析章节中的功能性模块分析，抽象整合出了相应的项目的核心模块划分。之后的项目代码开发也将以此作为开发设计的基础。
+
+此外还着重对项目中使用的核心技术实现做了一定的设计。诸如前后端交互中，请求响应通信交互过程中的逻辑设计。以及用户对项目功能使用的权限划分中尤为重要的鉴权过程的逻辑设计，和对实际项目使用的过程中，鉴权部分可能出现的问题，针对性地进行了代码层面的覆盖。
+
+最后是对项目的实际业务流程中的实体（Entity）进行了抽象，分析了相互之间的关系（Relation），和其必要的属性。主要通过E-R图和数据库表结构设计的方式展现。
